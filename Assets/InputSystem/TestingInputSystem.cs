@@ -23,17 +23,18 @@ public class TestingInputSystem : MonoBehaviour
         //playerInputActions.Player.Movement.performed += Movement;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector2 inputVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
         rb.AddForce(new Vector3(inputVector.x, 0, inputVector.y) * speed, ForceMode.Force);
     }
+
     //private void Movement(InputAction.CallbackContext context)
     //{
     //    Debug.Log(context);
     //    Vector2 movement = context.ReadValue<Vector2>();
     //    rb.AddForce(new Vector3(movement.x,0,movement.y) * speed, ForceMode.Force);
-    //}
+    //}//this was a bad idea because we had to spam the button everytime to move the ball
 
     private void PlayerInput_onActionTriggered(InputAction.CallbackContext context)
     {
