@@ -20,9 +20,29 @@ public class TestingInputSystem : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
         playerInputActions.Player.Jump.performed += Jump;
+        playerInputActions.Player.Disable();
+        playerInputActions.Test.Enable();
+        playerInputActions.Test.Test22.performed += Submit;
+        playerInputActions.Test.Disable();
+        playerInputActions.Player.Enable();
         //playerInputActions.Player.Movement.performed += Movement;
     }
 
+    private void Update()
+    {
+        if(Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            playerInput.SwitchCurrentActionMap("Test");
+            playerInputActions.Player.Disable();
+            playerInputActions.Test.Enable();
+        }
+        if (Keyboard.current.yKey.wasPressedThisFrame)
+        {
+            playerInput.SwitchCurrentActionMap("Player");
+            playerInputActions.Test.Disable();
+            playerInputActions.Player.Enable();
+        }
+    }
     private void FixedUpdate()
     {
         Vector2 inputVector = playerInputActions.Player.Movement.ReadValue<Vector2>();
@@ -48,5 +68,10 @@ public class TestingInputSystem : MonoBehaviour
         {
             rb.velocity = new Vector3(0, 5, 0);
         }
+    }
+
+    public void Submit(InputAction.CallbackContext context)
+    {
+        Debug.Log("Submit: "+context);
     }
 }
