@@ -66,7 +66,10 @@ public class TestingInputSystem : MonoBehaviour
         Debug.Log(context);
         if (context.phase == InputActionPhase.Performed)
         {
-            rb.velocity = new Vector3(0, 5, 0);
+            if (rb.transform.position.y <= 1)
+            {
+                rb.velocity = new Vector3(0, 5, 0);
+            }
         }
     }
 
