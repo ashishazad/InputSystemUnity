@@ -134,6 +134,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c14b85cc-f9db-486d-a483-84715ae9abc8"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -206,56 +217,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""Test"",
-            ""id"": ""a31abe97-bf56-4f61-a5b4-cd50a9ae802f"",
-            ""actions"": [
-                {
-                    ""name"": ""Test22"",
-                    ""type"": ""Button"",
-                    ""id"": ""2f1b11c3-67ca-4d94-b9fb-1cfd9dc46caf"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""44070dff-5873-4b29-adaf-0654675245ad"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Test22"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2795c416-531d-44a1-a443-76066c35a63f"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Test22"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""017d7547-5cbf-49e7-913b-f3e83f660b67"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Test22"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": [
@@ -268,6 +229,11 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             ""name"": ""Gamepad"",
             ""bindingGroup"": ""Gamepad"",
             ""devices"": []
+        },
+        {
+            ""name"": ""Touch"",
+            ""bindingGroup"": ""Touch"",
+            ""devices"": []
         }
     ]
 }");
@@ -279,9 +245,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
         m_UI_TestAndLog = m_UI.FindAction("TestAndLog", throwIfNotFound: true);
-        // Test
-        m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
-        m_Test_Test22 = m_Test.FindAction("Test22", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -419,39 +382,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
-
-    // Test
-    private readonly InputActionMap m_Test;
-    private ITestActions m_TestActionsCallbackInterface;
-    private readonly InputAction m_Test_Test22;
-    public struct TestActions
-    {
-        private @PlayerInputActions m_Wrapper;
-        public TestActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Test22 => m_Wrapper.m_Test_Test22;
-        public InputActionMap Get() { return m_Wrapper.m_Test; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(TestActions set) { return set.Get(); }
-        public void SetCallbacks(ITestActions instance)
-        {
-            if (m_Wrapper.m_TestActionsCallbackInterface != null)
-            {
-                @Test22.started -= m_Wrapper.m_TestActionsCallbackInterface.OnTest22;
-                @Test22.performed -= m_Wrapper.m_TestActionsCallbackInterface.OnTest22;
-                @Test22.canceled -= m_Wrapper.m_TestActionsCallbackInterface.OnTest22;
-            }
-            m_Wrapper.m_TestActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Test22.started += instance.OnTest22;
-                @Test22.performed += instance.OnTest22;
-                @Test22.canceled += instance.OnTest22;
-            }
-        }
-    }
-    public TestActions @Test => new TestActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -470,6 +400,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_GamepadSchemeIndex];
         }
     }
+    private int m_TouchSchemeIndex = -1;
+    public InputControlScheme TouchScheme
+    {
+        get
+        {
+            if (m_TouchSchemeIndex == -1) m_TouchSchemeIndex = asset.FindControlSchemeIndex("Touch");
+            return asset.controlSchemes[m_TouchSchemeIndex];
+        }
+    }
     public interface IPlayerActions
     {
         void OnJump(InputAction.CallbackContext context);
@@ -479,9 +418,5 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     {
         void OnSubmit(InputAction.CallbackContext context);
         void OnTestAndLog(InputAction.CallbackContext context);
-    }
-    public interface ITestActions
-    {
-        void OnTest22(InputAction.CallbackContext context);
     }
 }

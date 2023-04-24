@@ -20,11 +20,8 @@ public class TestingInputSystem : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
         playerInputActions.Player.Jump.performed += Jump;
-        playerInputActions.Player.Disable();
-        playerInputActions.Test.Enable();
-        playerInputActions.Test.Test22.performed += Submit;
-        playerInputActions.Test.Disable();
-        playerInputActions.Player.Enable();
+        playerInputActions.UI.Submit.performed += Submit;
+        playerInputActions.UI.Disable();
         //playerInputActions.Player.Movement.performed += Movement;
     }
 
@@ -32,14 +29,14 @@ public class TestingInputSystem : MonoBehaviour
     {
         if(Keyboard.current.tKey.wasPressedThisFrame)
         {
-            playerInput.SwitchCurrentActionMap("Test");
+            playerInput.SwitchCurrentActionMap("UI");
             playerInputActions.Player.Disable();
-            playerInputActions.Test.Enable();
+            playerInputActions.UI.Enable();
         }
         if (Keyboard.current.yKey.wasPressedThisFrame)
         {
             playerInput.SwitchCurrentActionMap("Player");
-            playerInputActions.Test.Disable();
+            playerInputActions.UI.Disable();
             playerInputActions.Player.Enable();
         }
     }
